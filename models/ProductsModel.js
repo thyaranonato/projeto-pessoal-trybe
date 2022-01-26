@@ -8,8 +8,15 @@ const create = async (name, quantity) => {
 };
 
 const getAll = async () => {
-  const [product] = await connection.execute(
+  const [products] = await connection.execute(
     'SELECT * FROM StoreManager.products',
+  );
+  return products;
+};
+
+const getById = async (id) => {
+  const [product] = await connection.execute(
+    'SELECT * FROM StoreManager.products WHERE id = ?', [id],
   );
   return product;
 };
@@ -17,4 +24,5 @@ const getAll = async () => {
 module.exports = { 
   create,
   getAll,
+  getById,
 };
