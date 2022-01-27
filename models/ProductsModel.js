@@ -23,7 +23,7 @@ const getById = async (id) => {
 
 const updateById = async (name, quantity, id) => {
   const [productUpdate] = await connection.execute(
-    'UPDATE StoreManager.products SET name = ?, quantity = ?, WHERE id = ?',
+    'UPDATE StoreManager.products SET name = ?, quantity = ? WHERE id = ?',
     [name, quantity, id],
   );
   return productUpdate;
