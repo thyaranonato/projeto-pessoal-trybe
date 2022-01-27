@@ -42,8 +42,18 @@ const idValidation = async (req, res, next) => {
   return next();
 };
 
+const updateValidation = async (req, res, next) => {
+  const { name } = req.body;
+
+  if (typeof name !== 'string' || name.length < 5) {
+    return res.status(422).json({ message: '"name" length must be at least 5 characters long' });
+  }
+  return next();
+};
+
 module.exports = {
   nameValidation,
   quantityValidation,
   idValidation,
+  updateValidation,
 };

@@ -10,13 +10,13 @@ const create = async (req, res) => {
     quantity,
   };
 
-  res.status(201).json(newProduct);
+  return res.status(201).json(newProduct);
 };
 
 const getAll = async (_req, res) => {
   const products = await Product.getAll();
 
-  res.status(200).json(products);
+  return res.status(200).json(products);
 };
 
 const getById = async (req, res) => {
@@ -26,8 +26,23 @@ const getById = async (req, res) => {
   return res.status(200).json(product);
 };
 
+const updateById = async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+
+  await Product.updateById(name, quantity, id);
+  
+  const productUpdated = {
+    id: Number(id),
+    name,
+    quantity,
+  };
+  return res.status(200).json(productUpdated);
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  updateById,
 };
