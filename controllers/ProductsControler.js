@@ -1,7 +1,7 @@
 const rescue = require('express-rescue');
 const Product = require('../services/ProductsService');
 
-const create = async (req, res) => {
+const create = rescue(async (req, res) => {
   const { name, quantity } = req.body;
   const product = await Product.create(name, quantity);
 
@@ -12,7 +12,7 @@ const create = async (req, res) => {
   };
 
   return res.status(201).json(newProduct);
-};
+});
 
 const getAll = rescue(async (_req, res) => {
   const products = await Product.getAll();
