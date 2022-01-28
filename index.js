@@ -4,6 +4,9 @@ const bodyParser = require('body-parser');
 const { nameValidation, quantityValidation, 
   idValidation, updateValidation } = require('./services/middlewares/ProductsValidation');
 const Product = require('./controllers/ProductsControler');
+const Sales = require('./controllers/SalesController');
+const { productIdValidation, 
+  quantitySalesValidation } = require('./services/middlewares/SalesValidation');
 
 const app = express();
 
@@ -27,6 +30,9 @@ app.route('/products/:id')
   .get(idValidation, Product.getById)
   .put(updateValidation, quantityValidation, idValidation, Product.updateById)
   .delete(idValidation, Product.deleteById);
+
+app.route('/sales')
+  .post(productIdValidation, quantitySalesValidation, Sales.create);
 
 app.listen(process.env.PORT, () => {
   console.log(`Escutando na porta ${process.env.PORT}`);
