@@ -6,7 +6,7 @@ const { nameValidation, quantityValidation,
 const Product = require('./controllers/ProductsControler');
 const Sales = require('./controllers/SalesController');
 const { productIdValidation, 
-  quantitySalesValidation } = require('./services/middlewares/SalesValidation');
+  quantitySalesValidation, idSalesValidation } = require('./services/middlewares/SalesValidation');
 
 const app = express();
 
@@ -32,7 +32,11 @@ app.route('/products/:id')
   .delete(idValidation, Product.deleteById);
 
 app.route('/sales')
-  .post(productIdValidation, quantitySalesValidation, Sales.create);
+  .post(productIdValidation, quantitySalesValidation, Sales.create)
+  .get(Sales.getAll);
+
+app.route('/sales/:id')
+  .get(idSalesValidation, Sales.getById);
 
 app.listen(process.env.PORT, () => {
   console.log(`Escutando na porta ${process.env.PORT}`);

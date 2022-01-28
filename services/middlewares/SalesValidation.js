@@ -1,3 +1,5 @@
+const Sales = require('../SalesService');
+
 const productIdValidation = (req, res, next) => {
   const arr = req.body;
 
@@ -27,7 +29,19 @@ const quantitySalesValidation = (req, res, next) => {
   return next();
 };
 
+const idSalesValidation = async (req, res, next) => {
+  const { id } = req.params;
+
+  const salesId = await Sales.getById(id);
+  if (salesId < 1) {
+    return res.status(404).json({ message: 'Sale not found' });
+  }
+
+  return next();
+};
+
 module.exports = {
   productIdValidation,
   quantitySalesValidation,
+  idSalesValidation,
 }; 

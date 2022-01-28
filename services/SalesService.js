@@ -11,7 +11,20 @@ const createSalesProducts = async (arr) => {
   return salesProduct;
 };
 
+const getAll = async () => {
+  const sales = await Sales.getAll();
+  return sales;
+};
+
+const getById = async (id) => {
+  const sales = await Sales.getById(id);
+
+  return sales;
+};
+
 module.exports = {
   createId,
   createSalesProducts,
+  getAll,
+  getById,
 };
