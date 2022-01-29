@@ -36,7 +36,8 @@ app.route('/sales')
   .get(Sales.getAll);
 
 app.route('/sales/:id')
-  .get(idSalesValidation, Sales.getById);
+  .get(idSalesValidation, Sales.getById)
+  .put(productIdValidation, quantitySalesValidation, Sales.update);
 
 app.listen(process.env.PORT, () => {
   console.log(`Escutando na porta ${process.env.PORT}`);

@@ -10,6 +10,7 @@ const createId = async () => {
 const createSalesProducts = async (arr) => {
   // Referência uso de query - várias inserções de elementos: https://www.npmjs.com/package/mysql2#using-promise-wrapper
   // Com execute estava quebrando
+  // Ref: https://stackoverflow.com/questions/53197922/difference-between-query-and-execute-in-mysql
   const [salesProduct] = await connection.query(
     'INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUES ?', 
     [arr],
@@ -41,9 +42,20 @@ const getById = async (id) => {
   return sales;
 };
 
+const update = async (id, { product_id: productId, quantity }) => {
+  const query = `
+  UPDATE StoreManager.sales_products 
+  SET product_id = ?, quantity = ?
+  WHERE sale_id = ?`;
+  const [sales] = await connection.execute(query, [productId, quantity, id]);
+
+  return sales;
+};
+
 module.exports = {
   createId,
   createSalesProducts,
   getAll,
   getById,
+  update,
 };

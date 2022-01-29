@@ -22,9 +22,19 @@ const getById = async (id) => {
   return sales;
 };
 
+const update = async (id, arr) => {
+  const sales = arr[0];
+  await Sales.update(id, sales);
+  return {
+    saleId: id,
+    itemUpdated: arr,
+  };
+};
+
 module.exports = {
   createId,
   createSalesProducts,
   getAll,
   getById,
+  update,
 };
