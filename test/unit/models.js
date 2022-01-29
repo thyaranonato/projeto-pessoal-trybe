@@ -29,7 +29,7 @@ describe('Teste do Product Model', () => {
     });
   });
 
-  describe('Lista todos os produtos', () => {
+  describe('Listar todos os produtos', () => {
     const result = [products]
     before(async () => {
   
@@ -39,18 +39,14 @@ describe('Teste do Product Model', () => {
     after(async () => {
       connection.execute.restore();
     });
+
+    describe("lista os produtos", () => {
+      it('retorna um array', async () => {
+        const data = await ProductModel.getAll();
   
-    describe('quando inserido com sucesso', () => {
-      it('retorna um objeto', async () => {
-        const data = await ProductModel.getAll(products);
-  
-        expect(data).to.be.a('array')
-      });
-  
-      it('objeto possui novo produto', async () => {
-        const data = await ProductModel.getAll(products);
-  
-        expect(data).to.have.equal(result);
+        expect(data).to.be.a('array');
+        expect(data).to.be.equal(result);
+        expect(data).to.be.lengthOf(1);
       });
     });
   })  
