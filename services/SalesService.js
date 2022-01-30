@@ -1,6 +1,6 @@
 const Sales = require('../models/SalesModel');
 
-const createId = async () => {
+const create = async () => {
   const salesId = await Sales.createId();
   return salesId.insertId;
 };
@@ -32,7 +32,7 @@ const update = async (id, arr) => {
 };
 
 module.exports = {
-  createId,
+  create,
   createSalesProducts,
   getAll,
   getById,

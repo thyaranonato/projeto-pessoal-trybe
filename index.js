@@ -1,4 +1,5 @@
 require('dotenv').config();
+const rescue = require('express-rescue');
 const express = require('express');
 const bodyParser = require('body-parser');
 const { nameValidation, quantityValidation, 
@@ -23,21 +24,21 @@ app.use((err, _req, res, _next) => {
 });
 
 app.route('/products')
-  .get(Product.getAll)
-  .post(nameValidation, quantityValidation, Product.create);
+  .get(rescue(Product.getAll))
+  .post(nameValidation, quantityValidation, rescue(Product.create));
 
 app.route('/products/:id')
-  .get(idValidation, Product.getById)
-  .put(updateValidation, quantityValidation, idValidation, Product.updateById)
-  .delete(idValidation, Product.deleteById);
+  .get(idValidation, rescue(Product.getById))
+  .put(updateValidation, quantityValidation, idValidation, rescue(Product.updateById))
+  .delete(idValidation, rescue(Product.deleteById));
 
 app.route('/sales')
-  .post(productIdValidation, quantitySalesValidation, Sales.create)
-  .get(Sales.getAll);
+  .post(productIdValidation, quantitySalesValidation, rescue(Sales.create))
+  .get(rescue(Sales.getAll));
 
 app.route('/sales/:id')
-  .get(idSalesValidation, Sales.getById)
-  .put(productIdValidation, quantitySalesValidation, Sales.update);
+  .get(idSalesValidation, rescue(Sales.getById))
+  .put(productIdValidation, quantitySalesValidation, rescue(Sales.update));
 
 app.listen(process.env.PORT, () => {
   console.log(`Escutando na porta ${process.env.PORT}`);
