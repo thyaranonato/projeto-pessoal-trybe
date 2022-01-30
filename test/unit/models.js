@@ -49,7 +49,61 @@ describe('Teste do Product Model', () => {
         expect(data).to.be.lengthOf(1);
       });
     });
-  })  
+  })
+
+  describe('Busca 1 produto no banco de dados pelo seu "id"', () => {  
+    describe('Quando o "id" não é válido', () => {
+      before(async () => {
+        const execute = [[]];
+        sinon.stub(connection, 'execute').resolves(execute);
+      })
+
+      after(async () => {
+        connection.execute.restore();
+      });
+
+      it('retorna um array vazio', async () => {
+        const data = await ProductModel.getById(4);
+        expect(data).to.be.a('array');
+        expect(data).to.have.length(0);
+      })
+    })
+
+    describe('quando "id" informado é válido', () => {
+      const product = {
+        id: 1,
+        name: "Martelo de Thor",
+        quantity: 10,
+      }
+  
+      before(async () => {
+        sinon.stub(ProductModel, 'getById')
+          .resolves(product);
+      });
+  
+      after(async () => {
+        ProductModel.getById.restore();
+      })
+  
+      it('retorna um objeto', async () => {
+        const data = await ProductModel.getById(1);
+  
+        expect(data).to.be.an('object');
+      });
+  
+      it('o objeto não está vazio', async () => {
+        const data = await ProductModel.getById(1);
+  
+        expect(data).to.be.not.empty;
+      });
+  
+      it('objeto possui propriedades: "id", "name", "quantity"', async () => {
+        const data = await ProductModel.getById(1);
+  
+        expect(data).to.include.all.keys('id', 'name', 'quantity');
+      });
+    });
+  })
 });
 
 describe('Teste do Sale Model', () => {
@@ -129,6 +183,46 @@ describe('Teste do Sale Model', () => {
         const data = await SaleModel.getAll(sales);
   
         expect(data).to.have.equal(result);
+      });
+    });
+  })
+
+  describe('Busca vendas no banco de dados por seu "id"', () => {  
+    describe('quando existe venda com "id" informado', () => {
+      const sales =   [
+        {
+          "saleId": 1,
+          "date": "2021-09-09T04:54:29.000Z",
+          "product_id": 1,
+          "quantity": 2
+        },
+        {
+          "saleId": 1,
+          "date": "2021-09-09T04:54:54.000Z",
+          "product_id": 2,
+          "quantity": 2
+        }
+      ]
+  
+      before(async () => {
+        sinon.stub(SaleModel, 'getById')
+          .resolves(sales);
+      });
+  
+      after(async () => {
+        SaleModel.getById.restore();
+      })
+  
+      it('retorna um objeto', async () => {
+        const response = await SaleModel.getById(1);
+  
+        expect(response).to.be.an('array');
+      });
+  
+      it('o objeto não está vazio', async () => {
+        const response = await SaleModel.getById(1);
+  
+        expect(response).to.be.not.empty;
       });
     });
   })
